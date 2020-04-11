@@ -119,7 +119,7 @@ class Game(State):
             # self.scene.play_sound('pause.wav')
 
     @staticmethod
-    @lru_cache(maxsize=1)
+    # @lru_cache(maxsize=1)
     def level_count():
         level_regex = re.compile("level(\\d+).py")
         count = 0
@@ -217,10 +217,10 @@ class Game(State):
 
         inputs = Inputs()
         inputs["hmove"] = Axis(
-            (pg.K_LEFT, pg.K_a), (pg.K_RIGHT, pg.K_d), JoyAxis(0, 0), smooth=0.1
+            (pg.K_LEFT, pg.K_a), (pg.K_RIGHT, pg.K_d), JoyAxis(0, 0),
         )
         inputs["vmove"] = Axis(
-            (pg.K_DOWN, pg.K_s), (pg.K_UP, pg.K_w), JoyAxis(0, 1, True),
+            (pg.K_DOWN, pg.K_s), (pg.K_UP, pg.K_w), JoyAxis(0, 1, True)
         )
         inputs["fire"] = Button(
             pg.K_SPACE,

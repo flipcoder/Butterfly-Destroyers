@@ -135,7 +135,7 @@ class Script:
 
         if isinstance(script, str):
             lib = importlib.import_module("game.scripts." + script)
-            run = False
+            run = None
             if not hasattr(lib, "run"):
                 # no run method? look for cls
                 for name, cls in lib.__dict__.items():

@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+
 from typing import Dict, Union, Set
 
 import pygame
@@ -22,9 +23,11 @@ class ButtonInput:
         return False
 
 
-@dataclass(frozen=True)
+# @dataclass(frozen=True)
 class KeyPress(ButtonInput):
-    key: int
+    # key: int
+    def __init__(self, key):
+        self.key: int = key
 
     def match(self, event):
         return event.type in (pygame.KEYDOWN, pygame.KEYUP) and event.key == self.key
@@ -34,10 +37,14 @@ class KeyPress(ButtonInput):
         return event.type == pygame.KEYDOWN
 
 
-@dataclass(frozen=True)
+# @dataclass(frozen=True)
 class JoyButton(ButtonInput):
-    joy_id: int
-    button: int
+    # joy_id: int
+    # button: int
+
+    def __init__(self, joy_id: int, button: int):
+        self.joy_id: int = joy_id
+        self.button: int = button
 
     def match(self, event):
         return (
@@ -51,13 +58,22 @@ class JoyButton(ButtonInput):
         return event.type == pygame.JOYBUTTONDOWN
 
 
-@dataclass(frozen=True)
+# @dataclass(frozen=True)
 class JoyAxisTrigger(ButtonInput):
-    joy_id: int
-    axis: int
-    threshold: int = 0.5
-    above: bool = True
     """Whether the button is pressed when the value is above or below the threshold"""
+
+    # joy_id: int
+    # axis: int
+    # threshold: int = 0.5
+    # above: bool = True
+
+    def __init__(
+        self, joy_id: int, axis: int, threshold: float = 0.5, above: bool = True
+    ):
+        self.joy_id: int = joy_id
+        axis: int = axis
+        self.threshold: float = threshold
+        self.above: bool = above
 
     def match(self, event) -> bool:
         return (
@@ -70,13 +86,20 @@ class JoyAxisTrigger(ButtonInput):
         return self.above == (event.value > self.threshold)
 
 
-@dataclass(frozen=True)
+# @dataclass(frozen=True)
 class JoyAxis:
-    joy_id: int
-    axis: int
-    reversed: bool = False
-    sensibility: float = 1.0
-    threshold: float = 0.2
+    # joy_id: int
+    # axis: int
+    # reversed: bool = False
+    # sensibility: float = 1.0
+    # threshold: float = 0.2
+
+    def __init__(self, joy_id: int, axis: int, rev: bool = False):
+        self.joy_id: int = joy_id
+        self.axis: int = axis
+        self.reversed: bool = rev
+        self.sensibility: float = 1.0
+        self.threshold: float = 0.2
 
     def match(self, event):
         return (
@@ -240,7 +263,7 @@ class Button:
 
 
 class Axis:
-    def __init__(self, negative, positive, *axis, smooth=0.1):
+    def __init__(self, negative: int, positive: int, *axis, smooth: float = 0.1):
         """
         An input axis taking values between -1 and 1.
 
@@ -341,7 +364,7 @@ class Axis:
             self._axis_value = axis_value
 
 
-class Inputs(dict, Dict[str, Union[Button, Axis]]):
+class Inputs(dict):
     def update(self, dt):
         """Trigger all callbacks and updates times"""
         for inp in self.values():

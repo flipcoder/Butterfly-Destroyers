@@ -8,4 +8,4 @@ print("Python version:", sys.version)
 
 from game import main
 
-sys.exit(main() or 0)
+main()

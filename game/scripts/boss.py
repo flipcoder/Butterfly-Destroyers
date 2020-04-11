@@ -33,7 +33,7 @@ class Level5(Level):
                 e = slot.get()
                 if isinstance(e, Boss):
                     continue
-            yield script.sleep(0.5)
+            yield self.script.sleep(0.5)
 
         yield self.huge_pause()
         yield from self.slow_type("Well done !", 5, "green", clear=True)
